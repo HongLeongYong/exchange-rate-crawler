@@ -16,7 +16,7 @@
 2. 安裝必要的依賴包
 
     ```bash
-    pip install -r requirements.txt
+    pip install beautifulsoup4
     ```
 
 ### 執行腳本
