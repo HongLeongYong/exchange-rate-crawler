@@ -1,6 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
 import time
+from pandas import json_normalize
+import pandas as pd
+from datetime import datetime
 
 url = 'https://www.tcb-bank.com.tw/personal-banking/deposit-exchange/exchange-rate/spot'
 
@@ -15,10 +18,11 @@ cookies_str = ';'.join([f"{key}={value}" for key, value in cookies.items()])
 soup = BeautifulSoup(response.text, 'html.parser') 
 token = soup.find('input',{'name':'__RequestVerificationToken'}).get('value')
 # print(token)
-
+now = datetime.now()
+formatted_date = str(now.strftime("%Y-%m-%d"))
 payload = {
         '__RequestVerificationToken': token,
-        'date': '2023-08-29',
+        'date': formatted_date,
         'time': '2'
     }
 
@@ -45,11 +49,19 @@ header = {
 click_url = 'https://www.tcb-bank.com.tw/api/client/ForeignExchange/GetSpotForeignExchangeSpecific'
 
 response = requests.post(click_url, data = payload, headers= header)
-print(response.json())
+# print(response.text)
+
 if response.status_code == 200:
     # 解析返回的內容
-       soup = BeautifulSoup(response.content, 'html.parser')
-    
-    # 在這裡進行您的處理
+    df = json_normalize(response.json(), 'result')
+    selected_df = df[['CurrencyName', 'Type', 'PromptExchange', 'CashExchange']]
+    pivot_df = pd.pivot_table(df, index='CurrencyName', columns='Type', values=['PromptExchange', 'CashExchange'], aggfunc='first', sort=False)
+    # 重置索引
+    pivot_df.reset_index(inplace=True)
+
+    # 重命名欄位
+    pivot_df.columns = ['CurrencyName', 'PromptBuy', 'PromptSell', 'CashBuy', 'CashSell']
+    pivot_df.to_csv('taiwan_cooperative_bank_exchange_rate.csv', index=False)
+    # print(pivot_df)
 else:
-       print( response.status_code )
+    print( response.status_code )
