@@ -20,6 +20,10 @@ token = soup.find('input',{'name':'__RequestVerificationToken'}).get('value')
 # print(token)
 now = datetime.now()
 formatted_date = str(now.strftime("%Y-%m-%d"))
+
+print(f'執行日期： {formatted_date}')
+print('台灣合作金庫銀行即期匯率： 10點匯率')
+
 payload = {
         '__RequestVerificationToken': token,
         'date': formatted_date,
