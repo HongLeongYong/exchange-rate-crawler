@@ -21,18 +21,18 @@
 
 ### 執行腳本
 
-#### 抓取台灣銀行的匯率
+#### 抓取台灣銀行的匯率 [code](taiwan_bank_exchange_rate.py)
 
 ```bash
 python taiwan_bank_exchange_rate.py
 ```
 
-#### 抓取第一銀行的匯率
+#### 抓取第一銀行的匯率 [code](first_bank_exchange_rate.py)
 ```bash
 python first_bank_exchange_rate.py
 ```
 
-#### 抓取合作金庫銀行的匯率
+#### 抓取合作金庫銀行的匯率 [code](taiwan_cooperative_bank_exchange_rate.py)
 ```bash
 python taiwan_cooperative_bank_exchange_rate.py
 ```
