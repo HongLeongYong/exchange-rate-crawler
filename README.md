@@ -14,10 +14,9 @@
 
 1. 安裝 Python 3.x
 2. 安裝必要的依賴包
-
-    ```bash
-    pip install beautifulsoup4
-    ```
+    1. beautifulsoup4
+    2. requests
+    3. pandas
 
 ### 執行腳本
 
