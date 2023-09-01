@@ -20,8 +20,18 @@ def get_first_bank_exchange_rate():
     df['現金/即期'] = currency_name[2::5]
     df['買入匯率'] = currency_name[3::5]
     df['賣出匯率'] = currency_name[4::5]
-    print(df)
+    
+    pivot_df = df.pivot(index='幣別', columns='現金/即期', values=['買入匯率', '賣出匯率'])
+    # 重設欄位名稱
+    pivot_df.columns = ['_'.join(col) for col in pivot_df.columns]
+    # 重置 index
+    pivot_df.reset_index(inplace=True)
+    pivot_df.columns = ['幣別', '現金買入匯率','即期買入匯率', '現金賣出匯率','即期賣出匯率']
 
+    new_order = ['幣別', '現金買入匯率','現金賣出匯率', '即期買入匯率', '即期賣出匯率']
+    pivot_df = pivot_df[new_order]
+
+    print(pivot_df)
     # 把匯率寫入 csv
     df.to_csv('first_bank_exchange_rate.csv', index=False, encoding='utf-8-sig')
 
