@@ -56,12 +56,13 @@ response = requests.post(post_request_url, data = payload, headers= header)
 if response.status_code == 200:
     # 解析返回的內容
     df = json_normalize(response.json(), 'result')
-    selected_df = df[['CurrencyName', 'Type', 'PromptExchange', 'CashExchange']]
-    pivot_df = pd.pivot_table(df, index='CurrencyName', columns='Type', values=['PromptExchange', 'CashExchange'], aggfunc='first', sort=False)
+    selected_df = df[['CurrencyName', 'Type', 'CashExchange','PromptExchange']]
+    pivot_df = pd.pivot_table(df, index='CurrencyName', columns='Type', values=['CashExchange','PromptExchange'], aggfunc='first', sort=False)
     pivot_df.reset_index(inplace=True)
 
     # 重命名欄位
-    pivot_df.columns = ['CurrencyName', 'PromptBuy', 'PromptSell', 'CashBuy', 'CashSell']
+    pivot_df.columns = ['幣別', '現金買入匯率', '現金賣出匯率', '即期買入匯率', '即期賣出匯率']
+
     pivot_df.to_csv('taiwan_cooperative_bank_exchange_rate.csv', index=False)
 else:
     print( response.status_code )
