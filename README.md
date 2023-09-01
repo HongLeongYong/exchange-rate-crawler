@@ -48,6 +48,10 @@ python taiwan_cooperative_bank_exchange_rate.py
 
 這樣的格式設計旨在提供全面而易於理解的匯率資訊。
 
+#### 其他功能，還未完成
+1. 在 [move history file.py](move_history_file.py) 中可以把產出的 csv 放入 archive 資料夾📁 中
+2. [global_variable.py](global_variable.py) 當有 proxy 時可帶入程式中使用
+
 #### 授權
 
 本專案採用MIT授權協議，詳情請參閱隨附的 [LICENSE](LICENSE) 文件。
