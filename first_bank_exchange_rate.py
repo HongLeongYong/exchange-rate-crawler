@@ -7,7 +7,8 @@ from bs4 import BeautifulSoup
 import time
 import pandas as pd
 
-def get_first_bank_exchange_rate():
+# get first bank exchange rate
+def main():
     response = requests.get('https://ibank.firstbank.com.tw/NetBank/7/0201.html?sh=none', verify=False)
     soup = BeautifulSoup(response.text, 'html.parser')
     currency = soup.find_all('td', class_='ListTitleFont')
@@ -35,4 +36,5 @@ def get_first_bank_exchange_rate():
     # 把匯率寫入 csv
     df.to_csv('first_bank_exchange_rate.csv', index=False, encoding='utf-8-sig')
 
-get_first_bank_exchange_rate()
+if __name__ == '__main__':
+    main()  

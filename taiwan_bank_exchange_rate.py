@@ -4,7 +4,8 @@ from bs4 import BeautifulSoup
 import time
 import pandas as pd
 
-def get_taiwan_bank_exchange_rate():
+# get taiwan bank exchange rate
+def main():
     response = requests.get('https://rate.bot.com.tw/xrt?Lang=zh-TW', verify=False)
     soup = BeautifulSoup(response.text, 'html.parser')
     currency = soup.find_all('div', class_='visible-phone print_hide')
@@ -56,4 +57,5 @@ def get_taiwan_bank_exchange_rate():
     # 把匯率寫入 csv
     df.to_csv('taiwan_bank_exchange_rate.csv', index=False, encoding='utf-8-sig')
 
-get_taiwan_bank_exchange_rate()
+if __name__ == '__main__':
+    main()
