@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from pandas import json_normalize
 import pandas as pd
+import global_variable as gv
 from datetime import datetime
 
 # get taiwan cooperative bank exchange rate
@@ -12,7 +13,18 @@ def main():
     session = requests.Session()
 
     # 難點有2: 1. 需要處理 token 2. 需要處理 cookies
-    response = session.get(url)
+    if gv.has_proxy:
+        for p in gv.proxy:
+            session.proxies = p
+            try:
+                response = session.get(url, timeout=1)
+                print('success: ' + p['https'])
+                break
+            except:
+                print('failed: ' + p['https'])
+    else:
+        response = session.get(url)
+
     website_string = BeautifulSoup(response.text, 'html.parser') 
 
     cookies = (session.cookies.get_dict())

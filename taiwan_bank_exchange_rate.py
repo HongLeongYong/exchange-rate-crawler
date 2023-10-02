@@ -6,7 +6,23 @@ import pandas as pd
 
 # get taiwan bank exchange rate
 def main():
-    response = requests.get('https://rate.bot.com.tw/xrt?Lang=zh-TW', verify=False)
+    has_proxy_bool = gv.has_proxy
+
+    if has_proxy_bool:
+        success_bool = False
+        lv_timeout = 1
+        while not success_bool:
+            for p in gv.proxy:
+                try:
+                    response = requests.get('https://rate.bot.com.tw/xrt?Lang=zh-TW', proxies=p, verify=False, timeout=lv_timeout)
+                    print('success: ' + p['https'])
+                    success_bool = True
+                except:
+                    print('failed: ' + p['https'])
+            lv_timeout += 1
+    else:    
+        response = requests.get('https://rate.bot.com.tw/xrt?Lang=zh-TW', verify=False)
+        
     soup = BeautifulSoup(response.text, 'html.parser')
     currency = soup.find_all('div', class_='visible-phone print_hide')
     currency_name = []
