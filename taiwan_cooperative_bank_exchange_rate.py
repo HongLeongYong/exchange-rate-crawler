@@ -14,14 +14,19 @@ def main():
 
     # 難點有2: 1. 需要處理 token 2. 需要處理 cookies
     if gv.has_proxy:
-        for p in gv.proxy:
-            session.proxies = p
-            try:
-                response = session.get(url, timeout=1)
-                print('success: ' + p['https'])
-                break
-            except:
-                print('failed: ' + p['https'])
+        success_bool = False
+        lv_timeout = 1
+        while not success_bool:
+            for p in gv.proxy:
+                session.proxies = p
+                try:
+                    response = session.get(url, timeout=1)
+                    print('success: ' + p['https'])
+                    success_bool = True
+                    break
+                except:
+                    print('failed: ' + p['https'])
+            lv_timeout += 1
     else:
         response = session.get(url)
 
@@ -65,7 +70,22 @@ def main():
 
     post_request_url = 'https://www.tcb-bank.com.tw/api/client/ForeignExchange/GetSpotForeignExchangeSpecific'
 
-    response = requests.post(post_request_url, data = payload, headers= header)
+    #這裡感覺需要處理 proxy
+    if gv.has_proxy:
+        success_bool = False
+        lv_timeout = 1
+        while not success_bool:
+            for p in gv.proxy:
+                try:
+                    response = requests.post(post_request_url, data = payload, headers= header, proxies=p, timeout=lv_timeout)
+                    print('success: ' + p['https'])
+                    success_bool = True
+                    break
+                except:
+                    print('failed: ' + p['https'])
+            lv_timeout += 1
+    else:
+        response = requests.post(post_request_url, data = payload, headers= header)
 
     if response.status_code == 200:
         # 解析返回的內容
