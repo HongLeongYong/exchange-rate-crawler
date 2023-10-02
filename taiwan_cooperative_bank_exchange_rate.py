@@ -70,7 +70,7 @@ def main():
 
     post_request_url = 'https://www.tcb-bank.com.tw/api/client/ForeignExchange/GetSpotForeignExchangeSpecific'
 
-    #這裡感覺需要處理 proxy
+    #處理 proxy
     if gv.has_proxy:
         success_bool = False
         lv_timeout = 1
